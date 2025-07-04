@@ -1,3 +1,4 @@
+
 import discord
 from discord.ext import commands
 from config import token  # Botun tokenini config dosyasından içe aktarma
@@ -10,6 +11,12 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 @bot.event
 async def on_ready():
+@bot.event
+async def on_member_join(member):
+    for channel in member.guild.text_channels:
+        if channel.permissions_for(member.guild.me).send_messages:
+            await channel.send(f'Hoş geldiniz, {member.mention}!')
+            break
     print(f'Giriş yapıldı:  {bot.user.name}')
 
 @bot.command()
@@ -36,3 +43,4 @@ async def ban_error(ctx, error):
         await ctx.send("Kullanıcı bulunamadı!")
 
 bot.run(token)
+
